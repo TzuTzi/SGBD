@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.demo11.HelloController">
+    <center>
+        <SplitPane dividerPositions="0.4">
+            <items>
+                <!-- Parent table: Shows -->
+                <VBox spacing="10.0">
+                    <padding>
+                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+                    </padding>
+                    <Label text="Shows"/>
+                    <TableView fx:id="showTable" prefHeight="200.0">
+                        <columns>
+                            <TableColumn fx:id="showIdColumn" text="ID" prefWidth="60.0"/>
+                            <TableColumn fx:id="showTitleColumn" text="Title" prefWidth="200.0"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10.0">
+                        <TextField fx:id="showTitleField" promptText="Show title" HBox.hgrow="ALWAYS"/>
+                        <Button text="Add" onAction="#onAddShow"/>
+                        <Button text="Update" onAction="#onUpdateShow"/>
+                        <Button text="Delete" onAction="#onDeleteShow"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Child table: Episodes -->
+                <VBox spacing="10.0">
+                    <padding>
+                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+                    </padding>
+                    <Label text="Episodes for selected show"/>
+                    <TableView fx:id="episodeTable" prefHeight="200.0">
+                        <columns>
+                            <TableColumn fx:id="episodeIdColumn" text="ID" prefWidth="60.0"/>
+                            <TableColumn fx:id="episodeTitleColumn" text="Title" prefWidth="200.0"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10.0">
+                        <TextField fx:id="episodeTitleField" promptText="Episode title" HBox.hgrow="ALWAYS"/>
+                        <Button text="Add" onAction="#onAddEpisode"/>
+                        <Button text="Update" onAction="#onUpdateEpisode"/>
+                        <Button text="Delete" onAction="#onDeleteEpisode"/>
+                    </HBox>
+                </VBox>
+            </items>
+        </SplitPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="10.0">
+            <padding>
+                <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+            </padding>
+            <Label text="Status:"/>
+            <Label fx:id="statusLabel"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Refresh" onAction="#onRefresh"/>
+        </HBox>
+    </bottom>
+</BorderPane>
