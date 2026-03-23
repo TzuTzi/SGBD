@@ -1,0 +1,5 @@
+Provocari in dezvoltare program
+Prima provocare :
+1. A fost folosit un switch-case pentru a afisa datele
+
+2. Linge un cactus

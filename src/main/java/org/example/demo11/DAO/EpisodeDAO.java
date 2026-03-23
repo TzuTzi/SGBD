@@ -20,6 +20,7 @@ public class EpisodeDAO {
 
     public Iterable<Episode> getAllEpisodes() {
         ArrayList<Episode> episodes = new ArrayList<>();
+        // Interogare: preia episoadele impreuna cu titlul show-ului (JOIN).
         String sql = "SELECT e.*, s.s_title FROM episodes e " +
                 "JOIN shows s ON e.s_id = s.s_id";
 
@@ -32,13 +33,14 @@ public class EpisodeDAO {
                 episodes.add(episode);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-au putut incarca episoadele din baza de date.", e);
         }
         return episodes;
     }
 
     public Iterable<Episode> getEpisodesByShowId(Integer showId) {
         ArrayList<Episode> episodes = new ArrayList<>();
+        // Interogare: preia doar episoadele apartinand show-ului selectat (1-n).
         String sql = "SELECT e.*, s.s_title FROM episodes e " +
                 "JOIN shows s ON e.s_id = s.s_id " +
                 "WHERE e.s_id = ?";
@@ -54,12 +56,13 @@ public class EpisodeDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-au putut incarca episoadele pentru show-ul selectat.", e);
         }
         return episodes;
     }
 
     public Optional<Episode> getEpisodeById(Integer id) {
+        // Interogare: preia un episod dupa ID.
         String sql = "SELECT e.*, s.s_title FROM episodes e " +
                 "JOIN shows s ON e.s_id = s.s_id " +
                 "WHERE e.e_id = ?";
@@ -74,13 +77,13 @@ public class EpisodeDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-a putut incarca episodul dupa id.", e);
         }
         return Optional.empty();
     }
 
     public void addEpisode(Episode episode) {
-
+        // INSERT parametrizat: adauga un copil pentru showId-ul primit.
         String sql = "INSERT INTO episodes (s_id, e_title) VALUES (?, ?)";
 
         try (Connection conn = Database.getConnection();
@@ -96,11 +99,12 @@ public class EpisodeDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-a putut adauga episodul in baza de date.", e);
         }
     }
 
     public void updateEpisode(Episode episode) {
+        // UPDATE parametrizat: modifica episodul existent (mentine relatia cu show-ul).
         String sql = "UPDATE episodes SET s_id = ?, e_title = ? WHERE e_id = ?";
 
         try (Connection conn = Database.getConnection();
@@ -111,11 +115,12 @@ public class EpisodeDAO {
             ps.setInt(3, episode.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-a putut actualiza episodul in baza de date.", e);
         }
     }
 
     public void removeEpisode(Integer id) {
+        // DELETE parametrizat: sterge episodul dupa ID.
         String sql = "DELETE FROM episodes WHERE e_id = ?";
 
         try (Connection conn = Database.getConnection();
@@ -124,7 +129,7 @@ public class EpisodeDAO {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-a putut sterge episodul din baza de date.", e);
         }
     }
 

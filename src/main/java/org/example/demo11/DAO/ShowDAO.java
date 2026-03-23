@@ -20,6 +20,7 @@ public class ShowDAO {
 
     public Iterable<Show> getAllShows() {
         ArrayList<Show> shows = new ArrayList<>();
+        // Interogare: preia toti parintii (shows).
         String sql = "SELECT * FROM shows";
 
         try (Connection conn = Database.getConnection();
@@ -32,12 +33,13 @@ public class ShowDAO {
                 shows.add(new Show(id, title));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-au putut incarca show-urile din baza de date.", e);
         }
         return shows;
     }
 
     public Optional<Show> getShowById(Integer id) {
+        // Interogare: preia un singur show dupa ID.
         String sql = "SELECT * FROM shows WHERE s_id = ?";
 
         try (Connection conn = Database.getConnection();
@@ -51,12 +53,13 @@ public class ShowDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-a putut incarca show-ul dupa id.", e);
         }
         return Optional.empty();
     }
 
     public void addShow(Show show) {
+        // INSERT parametrizat: previne SQL injection si adauga un parinte nou.
         String sql = "INSERT INTO shows (s_title) VALUES (?)";
 
         try (Connection conn = Database.getConnection();
@@ -71,11 +74,12 @@ public class ShowDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-a putut adauga show-ul in baza de date.", e);
         }
     }
 
     public void updateShow(Show show) {
+        // UPDATE parametrizat: modifica titlul show-ului existent.
         String sql = "UPDATE shows SET s_title = ? WHERE s_id = ?";
 
         try (Connection conn = Database.getConnection();
@@ -85,11 +89,12 @@ public class ShowDAO {
             ps.setInt(2, show.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-a putut actualiza show-ul in baza de date.", e);
         }
     }
 
     public void removeShow(Integer id) {
+        // DELETE parametrizat: sterge show-ul (cu episoade, daca ai ON DELETE CASCADE).
         String sql = "DELETE FROM shows WHERE s_id = ?";
 
         try (Connection conn = Database.getConnection();
@@ -98,7 +103,7 @@ public class ShowDAO {
             ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-a putut sterge show-ul din baza de date.", e);
         }
     }
 }

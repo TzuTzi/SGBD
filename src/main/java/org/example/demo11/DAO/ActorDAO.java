@@ -24,6 +24,7 @@ public class ActorDAO {
 
     public Iterable<Actor> getAllActors() {
         ArrayList<Actor> actors = new ArrayList<>();
+        // Interogare: preia toti actorii.
         try (Connection conn = Database.getConnection()) {
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM actor");
             ResultSet rs = statement.executeQuery();
@@ -32,15 +33,14 @@ public class ActorDAO {
                 String name = rs.getString(2);
                 actors.add(new Actor(id, name));
             }
-            return actors;
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-au putut incarca actorii din baza de date.", e);
         }
         return actors;
     }
 
     public Optional<Actor> getActorById(Integer id) {
+        // Interogare: preia un actor dupa ID (SELECT parametrizat).
         String sql = "SELECT * FROM actor WHERE id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement statement = conn.prepareStatement(sql)) {
@@ -53,7 +53,7 @@ public class ActorDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseAccessException("Nu s-a putut incarca actorul dupa id din baza de date.", e);
         }
         return Optional.empty();
     }
