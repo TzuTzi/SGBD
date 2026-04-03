@@ -1,0 +1,28 @@
+arhitectura stratificata
+
+model pt entitati shows, episodes, actors
+
+relatii intre entitati:
+1-n show episodes
+n-m shows actors
+
+dao pt acces la baza de date
+conexiunile se deschid doar cand e nevoie de ele, se inchid imediat
+dupa ce e incheiata operatia pe baza de date
+
+service pt business (sadly doar apeluri la metode din dao but whatever)
+
+ce am invatat?
+nu mare lucru
+
+provocari?
+had some issues cu javafx (fxml) si nu s au rezolvat
+
+
+fun facts !!!
+    1. nivel de izolare mariadb e repeatable read
+    2. nivel de izolare mysql e read committed
+    3. ornitorincii glow in the dark
+    4. in medie nivelul de ocupare intr un b-tree e 67-69%
+    5. 5nf pastreaza doar dependente join
+

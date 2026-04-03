@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.sgbd_lab1.MainController"
+            prefWidth="800" prefHeight="600">
+
+    <top>
+        <Label text="Transaction Demos" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-padding: 16px;">
+            <BorderPane.margin><Insets bottom="8"/></BorderPane.margin>
+        </Label>
+    </top>
+
+    <center>
+        <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+
+            <!-- DIRTY READ -->
+            <Tab text="Dirty Read">
+                <VBox spacing="12" style="-fx-padding: 16px;">
+                    <Button text="Run Dirty Read" onAction="#runDirtyRead" style="-fx-pref-width: 180px;"/>
+                    <GridPane hgap="16" vgap="8">
+                        <Label text="Original value:"    GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="drOriginal"        GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold;"/>
+                        <Label text="T2 read (dirty):"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="drDirtyRead"       GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-weight: bold;"/>
+                        <Label text="Final value:"       GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="drFinal"           GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
+                        <Label text="Dirty read occurred:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <Label fx:id="drOccurred"        GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-font-weight: bold;"/>
+                        <Label text="Restored correctly:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <Label fx:id="drRestored"        GridPane.columnIndex="1" GridPane.rowIndex="4" style="-fx-font-weight: bold;"/>
+                    </GridPane>
+                    <TextArea fx:id="drLog" editable="false" prefHeight="200" wrapText="true"
+                              style="-fx-font-family: monospace; -fx-font-size: 12px;"/>
+                </VBox>
+            </Tab>
+
+            <!-- UNREPEATABLE READ -->
+            <Tab text="Unrepeatable Read">
+                <VBox spacing="12" style="-fx-padding: 16px;">
+                    <Button text="Run Unrepeatable Read" onAction="#runUnrepeatableRead" style="-fx-pref-width: 180px;"/>
+                    <GridPane hgap="16" vgap="8">
+                        <Label text="First read:"               GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="urFirst"                  GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold;"/>
+                        <Label text="Second read:"              GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="urSecond"                 GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-weight: bold;"/>
+                        <Label text="Unrepeatable read occurred:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="urOccurred"               GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
+                    </GridPane>
+                    <TextArea fx:id="urLog" editable="false" prefHeight="200" wrapText="true"
+                              style="-fx-font-family: monospace; -fx-font-size: 12px;"/>
+                </VBox>
+            </Tab>
+
+            <!-- PHANTOM READ -->
+            <Tab text="Phantom Read">
+                <VBox spacing="12" style="-fx-padding: 16px;">
+                    <Button text="Run Phantom Read" onAction="#runPhantomRead" style="-fx-pref-width: 180px;"/>
+                    <GridPane hgap="16" vgap="8">
+                        <Label text="First count:"          GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="prFirst"              GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold;"/>
+                        <Label text="Second count:"         GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="prSecond"             GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-weight: bold;"/>
+                        <Label text="Phantom read occurred:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="prOccurred"           GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
+                    </GridPane>
+                    <TextArea fx:id="prLog" editable="false" prefHeight="200" wrapText="true"
+                              style="-fx-font-family: monospace; -fx-font-size: 12px;"/>
+                </VBox>
+            </Tab>
+
+            <!-- LOST UPDATE -->
+            <Tab text="Lost Update">
+                <VBox spacing="12" style="-fx-padding: 16px;">
+                    <HBox spacing="12">
+                        <Button text="Run Lost Update" onAction="#runLostUpdate" style="-fx-pref-width: 180px;"/>
+                        <Button text="Run With Pessimistic Lock" onAction="#runLostUpdatePessimistic" style="-fx-pref-width: 200px;"/>
+                    </HBox>
+                    <GridPane hgap="16" vgap="8">
+                        <Label text="Initial value:"        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="luInitial"            GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold;"/>
+                        <Label text="T1 addition:"          GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="luT1"                 GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-weight: bold;"/>
+                        <Label text="T2 addition:"          GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="luT2"                 GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
+                        <Label text="Expected value:"       GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <Label fx:id="luExpected"           GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-font-weight: bold;"/>
+                        <Label text="Actual value:"         GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <Label fx:id="luActual"             GridPane.columnIndex="1" GridPane.rowIndex="4" style="-fx-font-weight: bold;"/>
+                        <Label text="Lost update occurred:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                        <Label fx:id="luOccurred"           GridPane.columnIndex="1" GridPane.rowIndex="5" style="-fx-font-weight: bold;"/>
+                    </GridPane>
+                    <TextArea fx:id="luLog" editable="false" prefHeight="200" wrapText="true"
+                              style="-fx-font-family: monospace; -fx-font-size: 12px;"/>
+                </VBox>
+            </Tab>
+
+            <!-- DEADLOCK -->
+            <Tab text="Deadlock">
+                <VBox spacing="12" style="-fx-padding: 16px;">
+                    <Button text="Run Deadlock" onAction="#runDeadlock" style="-fx-pref-width: 180px;"/>
+                    <GridPane hgap="16" vgap="8">
+                        <Label text="Deadlock occurred:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="dlOccurred"        GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold;"/>
+                        <Label text="Victim:"            GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="dlVictim"          GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-weight: bold;"/>
+                    </GridPane>
+                    <TextArea fx:id="dlLog" editable="false" prefHeight="200" wrapText="true"
+                              style="-fx-font-family: monospace; -fx-font-size: 12px;"/>
+                </VBox>
+            </Tab>
+
+            <!-- BATCH PERFORMANCE -->
+            <Tab text="Batch Performance">
+                <VBox spacing="12" style="-fx-padding: 16px;">
+                    <Button text="Run Batch Performance" onAction="#runBatchPerformance" style="-fx-pref-width: 180px;"/>
+                    <GridPane hgap="16" vgap="8">
+                        <Label text="Auto-commit avg:"   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="bpAutoCommit"      GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-font-weight: bold;"/>
+                        <Label text="Batch commit avg:"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="bpBatchCommit"     GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-weight: bold;"/>
+                        <Label text="Single batch avg:"  GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="bpSingleBatch"     GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
+                        <Label text="Fastest:"           GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <Label fx:id="bpFastest"         GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-font-weight: bold;"/>
+                    </GridPane>
+                    <TextArea fx:id="bpLog" editable="false" prefHeight="200" wrapText="true"
+                              style="-fx-font-family: monospace; -fx-font-size: 12px;"/>
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+</BorderPane>
